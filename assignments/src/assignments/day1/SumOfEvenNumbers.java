@@ -1,6 +1,4 @@
-package com.theLaxmi.Assignments;
-
-import java.util.Scanner;
+package assignments.day1;
 
 public class SumOfEvenNumbers {
 

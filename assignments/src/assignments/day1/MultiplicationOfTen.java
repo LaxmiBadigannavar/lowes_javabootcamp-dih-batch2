@@ -1,4 +1,4 @@
-package com.theLaxmi.Assignments;
+package assignments.day1;
 /*
  * *multiplication of ten in reverse order
  */

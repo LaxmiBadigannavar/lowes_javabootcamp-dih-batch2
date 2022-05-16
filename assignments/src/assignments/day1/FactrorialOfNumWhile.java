@@ -1,4 +1,4 @@
-package com.theLaxmi.Assignments;
+package assignments.day1;
 
 public class FactrorialOfNumWhile {
 
