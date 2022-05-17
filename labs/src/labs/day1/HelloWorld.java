@@ -1,4 +1,4 @@
-package com.theLaxmi;
+package labs.day1;
 
 public class HelloWorld {
 

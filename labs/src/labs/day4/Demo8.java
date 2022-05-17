@@ -1,4 +1,4 @@
-package com.theLaxmi.day4;
+package labs.day4;
 class A{
 	static int a;
 	static {

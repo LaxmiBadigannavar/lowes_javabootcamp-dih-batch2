@@ -1,4 +1,4 @@
-package com.theLaxmi.day4;
+package labs.day4;
 class Student{
 	public int rollNo;
 	public String name;

@@ -1,4 +1,4 @@
-package com.theLaxmi.day3;
+package labs.day3;
 
 class Book{
 	public String title;

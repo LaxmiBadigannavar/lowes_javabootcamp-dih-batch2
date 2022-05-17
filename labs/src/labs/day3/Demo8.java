@@ -1,4 +1,4 @@
-package com.theLaxmi.day3;
+package labs.day3;
 class ConstructorDemo{
 	public ConstructorDemo() {
 		System.out.println("First Costructor");

@@ -1,4 +1,4 @@
-package com.theLaxmi.day4;
+package labs.day4;
 class Calculator{
 	public void addNumber() {
 		System.out.println("in non static method");

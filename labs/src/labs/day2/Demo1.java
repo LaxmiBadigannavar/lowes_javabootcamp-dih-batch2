@@ -1,4 +1,4 @@
-package com.theLaxmi;
+package labs.day2;
 
 class Test{
 	int x=10;

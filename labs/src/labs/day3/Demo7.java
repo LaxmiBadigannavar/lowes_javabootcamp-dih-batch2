@@ -1,4 +1,4 @@
-package com.theLaxmi.day3;
+package labs.day3;
 class Test{
 	public int a;
 	public Test() {
