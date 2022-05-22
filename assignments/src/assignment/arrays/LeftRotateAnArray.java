@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class LeftRotateAnArray {
 
 	public static void main(String[] args) {
-		int[] input = {1,2,3,4,5,6,7};
+		int[] input = {10,20,30,40,50};
 		System.out.println("Input array");
 		for(int in:input) {
 			System.out.print(in+" ");
