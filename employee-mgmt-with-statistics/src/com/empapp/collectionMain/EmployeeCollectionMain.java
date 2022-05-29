@@ -1,6 +1,4 @@
 package com.empapp.collectionMain;
-
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.empapp.Exception.EmpNotFoundException;
@@ -23,7 +21,7 @@ public class EmployeeCollectionMain {
 		System.out.println("Select 3: View Employee");
 		System.out.println("Select 4: Update Employee");
 		System.out.println("Select 5: View All Employee");
-		System.out.println("Select 6: Exit");
+		System.out.println("Select 6: Print Statistics");
 		System.out.println("Enter your selection:");
 		select=sc.nextInt();
 		
@@ -39,7 +37,6 @@ public class EmployeeCollectionMain {
 				
 				
 				System.out.println("Enter Employee age: ");
-				
 				int age=sc.nextInt(); 
 				
 				System.out.println("Enter Employee gender: ");
@@ -58,9 +55,9 @@ public class EmployeeCollectionMain {
 				double salary=sc.nextDouble(); 
 				
 				emp= new Employee(name, gender,age,dept, desgn,salary );
-				
-				boolean valStatus =empservice.validate(emp, empVal -> empVal.getAge() >= 20 && 
-						empVal.getAge() <= 60 && empVal.getSalary() > 1000 
+				System.out.println("Employee age:"+age);
+				boolean valStatus =empservice.validate(emp, empVal -> empVal.getAge() >= 20 &&
+						empVal.getAge() <= 60 && empVal.getSalary() > 100
 						&& (empVal.getGender().equalsIgnoreCase("male"))|
 						(empVal.getGender().equalsIgnoreCase("female")));
 
@@ -112,13 +109,15 @@ public class EmployeeCollectionMain {
 				
 		case 5: empservice.displayAll();
 				break;
+				
+		case 6:	empservice.printEmpStatistics(); 
+				break;
 		default: System.out.println("Wrong Entry....");
 		}
 		}
 		}
 		catch(InputMismatchException e) {
 			System.err.println("Wrong Input");
-			
 		}
 		
 	}

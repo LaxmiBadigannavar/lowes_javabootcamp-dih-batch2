@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import com.empapp.Exception.EmpNotFoundException;
 import com.empapp.model.Employee;
@@ -98,11 +96,5 @@ public class EmployeeServiceImpl implements EmployeeService{
 		}
 		
 	}
-	public static boolean validate(Employee emp, Predicate<Employee> validator) {
-		return validator.test(emp); // executes lambda expression body
-	}
-	public static void handleError(String errorMessage, Consumer<String> consumer)
-	{
-		consumer.accept(errorMessage);
-	}
+	
 }

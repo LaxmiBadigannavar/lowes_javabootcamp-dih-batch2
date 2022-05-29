@@ -1,14 +1,19 @@
 package com.empapp.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
+import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Consumer;
+import java.util.TreeMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.empapp.Exception.EmpNotFoundException;
+
 import com.empapp.model.Employee;
 
 public class EmployeeServiceImpl implements EmployeeService{
@@ -97,6 +102,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 		}
 		
+		
 	}
 	public static boolean validate(Employee emp, Predicate<Employee> validator) {
 		return validator.test(emp); // executes lambda expression body
@@ -104,5 +110,52 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public static void handleError(String errorMessage, Consumer<String> consumer)
 	{
 		consumer.accept(errorMessage);
+	}
+	
+	public void printEmpStatistics() {
+			System.out.println("Employee map: "+empMap);
+				List<Integer> empIds = empMap.values()
+										.stream()
+										.map(Employee::getEmpId)
+										.collect(Collectors.toList());
+				System.out.println("Total No of Employees:  "+empIds.size());
+			
+				System.out.println("test:"+emp.getEmpId());
+				List<Integer> list = empMap.values()
+					.stream()
+					//.map(Employee::getEmpId)
+					.filter(emp -> (emp.getAge())>30)
+					.map(Employee::getEmpId)
+					.collect(Collectors.toList());
+					//.forEach(System.out::println);
+				System.out.println(list);
+				
+				System.out.println("Employees total and avarage salary:");
+				DoubleSummaryStatistics stats = empMap.values()
+													.stream()
+													.map(Employee::getSalary)
+													.collect(Collectors.toList())
+													.stream()
+													.mapToDouble((sal) -> sal)
+													.summaryStatistics();
+				
+				System.out.println("Total Salary: " + stats.getSum());
+				System.out.println("Avg Salary: " + stats.getAverage());
+				System.out.print("Group by Dept: ");
+				Map<String, Long> groupByDept = 
+						empMap.values()
+							.stream()
+							.collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
+				System.out.println(groupByDept);
+				
+				System.out.println("Department wise employee count:");
+				Map<String, Long> groupSortByDept = 
+						empMap.values()
+							.stream()
+							.sorted(Comparator.comparing(Employee::getDepartment))
+							.collect(Collectors.groupingBy(Employee::getDepartment, TreeMap::new, Collectors.counting()));
+				System.out.println(groupSortByDept);
+				System.out.println();
+				System.out.println();
 	}
 }

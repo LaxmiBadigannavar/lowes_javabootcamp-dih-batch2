@@ -6,5 +6,5 @@ public interface EmployeeService {
 	 public void delete(int empId);
 	 public Employee display(int empId); 
 	 public void displayAll();
-	}
+}
 			 

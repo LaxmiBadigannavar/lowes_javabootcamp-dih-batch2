@@ -1,21 +1,19 @@
 package com.empapp.collectionMain;
 
-
-import java.util.InputMismatchException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+
 import com.empapp.Exception.EmpNotFoundException;
 import com.empapp.model.*;
 import com.empapp.service.EmployeeServiceImpl;
-
-
 public class EmployeeCollectionMain {
 
 	public static void main(String[] args) {
-		Employee emp = new Employee();
+		Employee emp;
 		int select;
 		EmployeeServiceImpl empservice=new EmployeeServiceImpl();
 		Scanner sc = new Scanner(System.in);
-		try {
 		while(true){
 		System.out.println("Select operation: ");
 		System.out.println("Select 1: Add Employee");
@@ -26,7 +24,6 @@ public class EmployeeCollectionMain {
 		System.out.println("Select 6: Exit");
 		System.out.println("Enter your selection:");
 		select=sc.nextInt();
-		
 		switch(select) {
 		case 1: 
 				System.out.println("Enter Employee Details: ");					
@@ -39,8 +36,8 @@ public class EmployeeCollectionMain {
 				
 				
 				System.out.println("Enter Employee age: ");
+				int age=sc.nextInt();
 				
-				int age=sc.nextInt(); 
 				
 				System.out.println("Enter Employee gender: ");
 				String gender=sc.next();
@@ -55,28 +52,10 @@ public class EmployeeCollectionMain {
 				
 				
 				System.out.println("Enter Employee salary: ");
-				double salary=sc.nextDouble(); 
-				
+				double salary=sc.nextDouble();
 				emp= new Employee(name, gender,age,dept, desgn,salary );
-				
-				boolean valStatus =empservice.validate(emp, empVal -> empVal.getAge() >= 20 && 
-						empVal.getAge() <= 60 && empVal.getSalary() > 1000 
-						&& (empVal.getGender().equalsIgnoreCase("male"))|
-						(empVal.getGender().equalsIgnoreCase("female")));
-
-				if (valStatus) {
-					// Logic to save employee details
-					empservice.addEmployee(emp, eid);
-					System.out.println("Employee added successfully");
-				}
-				else 
-				{
-					empservice.handleError("Invalid Age or Salary or Gender", msg -> {System.err.println("Validation Error:" );
-					System.err.println(msg);});
-				}
-				
-				
-				
+				empservice.addEmployee(emp, eid);
+				System.out.println("Employee added successfully");
 				break;
 				
 		case 2:	System.out.println("Enter Employee id to delete:");
@@ -113,13 +92,8 @@ public class EmployeeCollectionMain {
 		case 5: empservice.displayAll();
 				break;
 		default: System.out.println("Wrong Entry....");
-		}
-		}
-		}
-		catch(InputMismatchException e) {
-			System.err.println("Wrong Input");
-			
-		}
 		
+		}
+		}
 	}
 }
