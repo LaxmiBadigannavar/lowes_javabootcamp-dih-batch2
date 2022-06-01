@@ -1,4 +1,4 @@
-package com.empapp.collectionMain;
+package com.empapp;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.empapp.Exception.EmpNotFoundException;
@@ -6,7 +6,7 @@ import com.empapp.model.*;
 import com.empapp.service.EmployeeServiceImpl;
 
 
-public class EmployeeCollectionMain {
+public class EmployeeManagementMain {
 
 	public static void main(String[] args) {
 		Employee emp = new Employee();

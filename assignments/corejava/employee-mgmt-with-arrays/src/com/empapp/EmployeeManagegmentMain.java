@@ -1,4 +1,4 @@
-package com.empapp.arrays;
+package com.empapp;
 
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ import com.empapp.exception.EmpNotFoundException;
 import com.empapp.model.Employee;
 import com.empapp.service.EmployeeServiceArray;
 
-public class EmployeeMgmtWithArrayMain {
+public class EmployeeManagegmentMain {
 		public static void main(String[] args) {
 			EmployeeServiceArray empSevice=new EmployeeServiceArray();
 			Employee[] empArray = new Employee[10];	

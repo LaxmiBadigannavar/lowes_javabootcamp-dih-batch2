@@ -1,4 +1,4 @@
-package com.empapp.collectionMain;
+package com.empapp;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import com.empapp.Exception.EmpNotFoundException;
 import com.empapp.model.*;
 import com.empapp.service.EmployeeServiceImpl;
 
-public class EmployeeJbdcMain {
+public class EmployeeManagementMain {
 
 	public static void main(String[] args) {
 		Employee emp;
