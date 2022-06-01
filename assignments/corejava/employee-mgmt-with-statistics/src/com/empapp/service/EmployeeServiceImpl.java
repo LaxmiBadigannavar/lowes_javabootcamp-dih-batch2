@@ -1,5 +1,8 @@
 package com.empapp.service;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
@@ -8,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -25,7 +29,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	public void delete(int empId) {
-		empMap.remove(empId);
+		
+		if(empMap.get(empId)!=null) {
+			empMap.remove(empId);
+			System.out.println("goint here"+empMap.get(empId));
+		}
+		else
+			throw new EmpNotFoundException();
 	}
 	public Employee display(int empId)throws EmpNotFoundException {
 		if(empMap.containsKey(empId))
@@ -162,4 +172,65 @@ public class EmployeeServiceImpl implements EmployeeService{
 				System.out.println();
 				System.out.println();
 	}
+	
+	public synchronized void importEmployees() {
+		System.out.format("%n%s - Import started %n", Thread.currentThread().getName());
+		int counter = 0;
+		try (Scanner in = new Scanner(new FileReader("D:\\training\\lowes_javabootcamp-dih-batch2\\assignments\\corejava\\employee-mgmt-with-impexp\\importfile.txt"))) {
+			System.out.println("Implorting file...");
+			while (in.hasNextLine()) {
+				String line = in.nextLine();
+				System.out.println("Importing employee - " + emp);
+				Employee emp = new Employee();
+				StringTokenizer tokenizer = new StringTokenizer(line, ",");
+
+			
+				emp.setEmpId(Integer.parseInt(tokenizer.nextToken()));
+			
+				emp.setName(tokenizer.nextToken());
+				
+				emp.setAge(Integer.parseInt(tokenizer.nextToken()));
+				
+				emp.setGender(tokenizer.nextToken());
+		
+				emp.setDesignation(tokenizer.nextToken());
+				
+				emp.setDepartment(tokenizer.nextToken());
+
+				empMap.put(emp.getEmpId(), emp);
+				
+				counter++;
+			}
+			System.out.format("%s - %d Employees are imported successfully.", Thread.currentThread().getName(),
+					counter);
+		} catch (Exception e) {
+			System.out.println("Error occured while importing employee data. " + e.getMessage());
+		}
+	}
+
+	
+	public void exportEmployees() {
+		System.out.format("   Export started %n", Thread.currentThread().getName());
+		try (FileWriter out = new FileWriter("D:\\\\training\\\\lowes_javabootcamp-dih-batch2\\\\assignments\\\\corejava\\\\employee-mgmt-with-impexp\\\\exportfile.txt")) {
+		
+			for (Employee emp : empMap.values()){
+				String line = emp.getEmpId() + "," + emp.getName() + "," + emp.getAge() + ","+emp.getGender() + ","
+						+ emp.getDesignation() + "," + emp.getDepartment() + "," + emp.getSalary() + "\n";
+				System.out.println(line);
+				try {
+					out.write(line);
+				} catch (IOException e) {
+					System.out
+							.println("Error occured while writing employee data into file. " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+						
+					
+			System.out.format("%d Employees are exported successfully.", empMap.values().size());
+		} catch (IOException e) {
+			System.out.println("Error occured while exporting employee data. " + e.getMessage());
+		}
+	}
+	
 }

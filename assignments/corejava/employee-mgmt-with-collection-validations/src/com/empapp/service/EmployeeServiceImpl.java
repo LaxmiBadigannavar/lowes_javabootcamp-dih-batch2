@@ -19,8 +19,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 		empMap.put(empId, emp);
 	}
 
-	public void delete(int empId) {
-		empMap.remove(empId);
+	public void delete(int empId) throws EmpNotFoundException{
+		if(empMap.containsKey(empId))
+			empMap.remove(empId);
+		else
+			throw new EmpNotFoundException();
 	}
 	public Employee display(int empId)throws EmpNotFoundException {
 		if(empMap.containsKey(empId))

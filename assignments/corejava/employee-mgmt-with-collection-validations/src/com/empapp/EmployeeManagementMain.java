@@ -80,9 +80,13 @@ public class EmployeeManagementMain {
 				break;
 				
 		case 2:	System.out.println("Enter Employee id to delete:");
-				eid=sc.nextInt();
-				empservice.delete(eid);
-				System.out.println("Employee deleted sucessfully");
+						eid=sc.nextInt();
+						try {
+						empservice.delete(eid);
+						System.out.println("Employee deleted sucessfully");
+						}catch(EmpNotFoundException e) {
+							System.err.println("Employee not found");
+						}
 				break;
 		
 		case 3:System.out.println("Provide Employee Id to Display");
@@ -94,7 +98,7 @@ public class EmployeeManagementMain {
 					System.out.println(eid+"  "+emp.getName()+"  "+emp.getGender()+
 						"  "+emp.getAge()+" "+emp.getDesignation()+" "+emp.getDepartment());
 				}catch(EmpNotFoundException e) {
-					System.out.println("Employee Not found");
+					System.err.println("Employee Not found");
 					System.out.println();
 				}
 				
@@ -106,7 +110,7 @@ public class EmployeeManagementMain {
 				try {
 					empservice.update(empId);
 				}catch(EmpNotFoundException e) {
-					System.out.println("Employee not found");
+					System.err.println("Employee not found");
 				}
 				break;
 				
