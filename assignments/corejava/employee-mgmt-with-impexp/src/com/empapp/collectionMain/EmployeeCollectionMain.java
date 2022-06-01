@@ -1,19 +1,25 @@
 package com.empapp.collectionMain;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutorService;
 
 import com.empapp.Exception.EmpNotFoundException;
 import com.empapp.model.*;
 import com.empapp.service.EmployeeServiceImpl;
+
+
 public class EmployeeCollectionMain {
 
 	public static void main(String[] args) {
-		Employee emp;
+		Employee emp = new Employee();
 		int select;
 		EmployeeServiceImpl empservice=new EmployeeServiceImpl();
+		ExecutorService executor = Executors.newCachedThreadPool();
 		Scanner sc = new Scanner(System.in);
+		try {
 		while(true){
 		System.out.println("Select operation: ");
 		System.out.println("Select 1: Add Employee");
@@ -21,9 +27,11 @@ public class EmployeeCollectionMain {
 		System.out.println("Select 3: View Employee");
 		System.out.println("Select 4: Update Employee");
 		System.out.println("Select 5: View All Employee");
-		System.out.println("Select 6: Exit");
+		System.out.println("Select 6: Import Employees");
+		System.out.println("Select 7: Export Employees");
 		System.out.println("Enter your selection:");
 		select=sc.nextInt();
+		
 		switch(select) {
 		case 1: 
 				System.out.println("Enter Employee Details: ");					
@@ -36,8 +44,7 @@ public class EmployeeCollectionMain {
 				
 				
 				System.out.println("Enter Employee age: ");
-				int age=sc.nextInt();
-				
+				int age=sc.nextInt(); 
 				
 				System.out.println("Enter Employee gender: ");
 				String gender=sc.next();
@@ -52,10 +59,28 @@ public class EmployeeCollectionMain {
 				
 				
 				System.out.println("Enter Employee salary: ");
-				double salary=sc.nextDouble();
-				emp= new Employee(name, gender,age,dept, desgn,salary );
-				empservice.addEmployee(emp, eid);
-				System.out.println("Employee added successfully");
+				double salary=sc.nextDouble(); 
+				
+				emp= new Employee(eid,name, gender,age,dept, desgn,salary );
+				System.out.println("Employee age:"+age);
+				boolean valStatus =empservice.validate(emp, empVal -> empVal.getAge() >= 20 &&
+						empVal.getAge() <= 60 && empVal.getSalary() > 100
+						&& (empVal.getGender().equalsIgnoreCase("male"))|
+						(empVal.getGender().equalsIgnoreCase("female")));
+
+				if (valStatus) {
+					// Logic to save employee details
+					empservice.addEmployee(emp, eid);
+					System.out.println("Employee added successfully");
+				}
+				else 
+				{
+					empservice.handleError("Invalid Age or Salary or Gender", msg -> {System.err.println("Validation Error:" );
+					System.err.println(msg);});
+				}
+				
+				
+				
 				break;
 				
 		case 2:	System.out.println("Enter Employee id to delete:");
@@ -91,9 +116,41 @@ public class EmployeeCollectionMain {
 				
 		case 5: empservice.displayAll();
 				break;
+				
+		case 6:	Callable<Boolean> importThread = new Callable<Boolean>() {
+					public Boolean call() throws Exception {
+						System.out.println(Thread.currentThread() + "Importing Employees");
+						empservice.importEmployees();
+						return true;
+					}
+				};
+
+				Future<Boolean> importFuture = executor.submit(importThread);
+				System.out.println(Thread.currentThread().getName() + " Import process started");	
+				break;
+				
+		case 7:	Callable<Boolean> exportThread = new Callable<Boolean>() {
+				public Boolean call() throws Exception {
+						System.out.println(Thread.currentThread() + " Waiting for 5s to start export process.");
+						//Thread.sleep(5000);
+						empservice.exportEmployees();							
+				return true;
+				}
+			};
+			
+			Future<Boolean> exportFuture = executor.submit(exportThread);
+			System.out.println(Thread.currentThread().getName() + " Export process triggered");						
+			
+			
+			break;					
+				
 		default: System.out.println("Wrong Entry....");
+		}
+		}
+		}
+		catch(InputMismatchException e) {
+			System.err.println("Wrong Input");
+		}
 		
-		}
-		}
 	}
 }

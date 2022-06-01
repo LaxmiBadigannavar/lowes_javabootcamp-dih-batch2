@@ -113,14 +113,18 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 	
 	public void printEmpStatistics() {
-			System.out.println("Employee map: "+empMap);
+			//System.out.println("Employee map: "+empMap);
 				List<Integer> empIds = empMap.values()
 										.stream()
 										.map(Employee::getEmpId)
 										.collect(Collectors.toList());
 				System.out.println("Total No of Employees:  "+empIds.size());
 			
-				System.out.println("test:"+empIds);
+				System.out.println("Employees :"+empIds);
+				
+				
+				
+				
 				List<Integer> list = empMap.values()
 					.stream()
 					//.map(Employee::getEmpId)
@@ -128,7 +132,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 					.map(Employee::getEmpId)
 					.collect(Collectors.toList());
 					//.forEach(System.out::println);
-				System.out.println("age :"+list);
+				System.out.println("Employees whose age is greater than 30:"+list);
 				
 				System.out.println("Employees total and avarage salary:");
 				DoubleSummaryStatistics stats = empMap.values()

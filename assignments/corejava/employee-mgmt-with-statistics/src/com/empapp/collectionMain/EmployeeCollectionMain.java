@@ -54,7 +54,7 @@ public class EmployeeCollectionMain {
 				System.out.println("Enter Employee salary: ");
 				double salary=sc.nextDouble(); 
 				
-				emp= new Employee(name, gender,age,dept, desgn,salary );
+				emp= new Employee(eid,name, gender,age,dept, desgn,salary );
 				System.out.println("Employee age:"+age);
 				boolean valStatus =empservice.validate(emp, empVal -> empVal.getAge() >= 20 &&
 						empVal.getAge() <= 60 && empVal.getSalary() > 100
