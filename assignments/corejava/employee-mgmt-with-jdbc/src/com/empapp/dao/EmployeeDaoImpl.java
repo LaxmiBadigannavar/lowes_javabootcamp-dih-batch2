@@ -1,10 +1,14 @@
 package com.empapp.dao;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.empapp.model.Employee;
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -138,14 +142,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			System.out.println("query not updating:"+e.getMessage());
 		}
 	}
-	public void getAllEmployees() {
+	public List<Employee> getAllEmployees() {
 		if(stmt==null) {
 			getConnection();
 		}
-
-		
 		String selectQuery = "SELECT * FROM employeenew";
 		System.out.println("Query excuting::"+selectQuery);
+		List<Employee> listEmp = new ArrayList<>();
 		try {
 			rs = stmt.executeQuery(selectQuery);
 			System.out.format("\t%s \t%s \t%s \t%s \t%s \t%s \t%s\n", "Id", "Age", "Name", "Gender", "Designation", "Department",
@@ -159,15 +162,68 @@ public class EmployeeDaoImpl implements EmployeeDao {
 				String designation = rs.getString("designation");
 				String department = rs.getString("department");
 				double salary = rs.getDouble("salary");
+				
+				listEmp.add(new Employee(id,name,gender,age,designation,department,salary));
 				System.out.format("\t%d \t%d \t%s \t%s \t%s \t%s \t%s\n", id, age, name,gender, designation, department, salary);
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//return emp;
+		return listEmp;
 	}
 	
+	public void ImpFileToTable(Employee emp){
+		
+		insertTable(emp);
+	}
 	
+	public void ExpFromTableToFile() {
+		if (stmt == null) {
+			getConnection();
+		}
+		String selectQuery = "SELECT * FROM employeenew";
+		System.out.println("Query excuting::" + selectQuery);
+		try (FileWriter out = new FileWriter(
+				"D:\\training\\lowes_javabootcamp-dih-batch2\\assignments\\corejava\\employee-mgmt-with-jdbc\\exportfile.txt")) {
+		try {
+			rs = stmt.executeQuery(selectQuery);
+			System.out.format("\t%s \t%s \t%s \t%s \t%s \t%s \t%s\n", "Id", "Name", "age", "Gender", "Designation",
+					"Department", "Salary");
+			while (rs.next()) {
+				// Retrieve by column name
+				int id = rs.getInt("empid");
+				int age = rs.getInt("age");
+				String name = rs.getString("name");
+				String gender = rs.getString("gender");
+				String designation = rs.getString("designation");
+				String department = rs.getString("department");
+				double salary = rs.getDouble("salary");
+				System.out.format("\t%d \t%s \t%d \t%s \t%s \t%s \t%s\n", id, name, age, gender, designation,
+						department, salary);
+				System.out.format("   Export started %n", Thread.currentThread().getName());
+				
+
+					String line = id + "," + name + "," + age + "," + gender + "," + designation + "," + department
+							+ "," + salary + "\n";
+					System.out.println("Line is"+line);
+					try {
+						System.out.println("Coming here:"+line);
+						out.write(line);
+					} catch (IOException e) {
+						System.out.println("Error occured while writing employee data into file. " + e.getMessage());
+						e.printStackTrace();
+					}
+
+				} 
+			}catch (SQLException e) {
+				e.getMessage();
+			}
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 

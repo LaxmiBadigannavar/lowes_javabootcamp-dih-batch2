@@ -1,12 +1,20 @@
 package com.empapp.service;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.empapp.Exception.EmpNotFoundException;
 import com.empapp.dao.EmployeeDaoImpl;
@@ -48,5 +56,100 @@ public class EmployeeServiceImpl implements EmployeeService{
 	{
 		consumer.accept(errorMessage);
 	}
+	
+	public synchronized void importEmployees() {
+		System.out.format("%n%s - Import started %n", Thread.currentThread().getName());
+		int counter = 0;
+		try (Scanner in = new Scanner(new FileReader("D:\\training\\lowes_javabootcamp-dih-batch2\\assignments\\corejava\\employee-mgmt-with-jdbc\\importfile.txt"))) {
+			System.out.println("Implorting file...");
+			while (in.hasNextLine()) {
+				String line = in.nextLine();
+				System.out.println("Importing employee - " + emp);
+				Employee emp = new Employee();
+				StringTokenizer tokenizer = new StringTokenizer(line, ",");
+
+			
+				emp.setEmpId(Integer.parseInt(tokenizer.nextToken()));
+			
+				emp.setName(tokenizer.nextToken());
+				
+				emp.setAge(Integer.parseInt(tokenizer.nextToken()));
+				
+				emp.setGender(tokenizer.nextToken());
+		
+				emp.setDesignation(tokenizer.nextToken());
+				
+				emp.setDepartment(tokenizer.nextToken());
+				
+				emp.setSalary(Double.parseDouble(tokenizer.nextToken()));
+				
+				empimpl.ImpFileToTable(emp);
+				
+				counter++;
+			}
+			System.out.format("%s - %d Employees are imported successfully.", Thread.currentThread().getName(),
+					counter);
+		} catch (Exception e) {
+			System.out.println("Error occured while importing employee data. " + e.getMessage());
+		}
+	}
+
+	
+	public void exportEmployees() {
+		System.out.format("   Export started %n", Thread.currentThread().getName());
+		empimpl.ExpFromTableToFile();
+	}
+	
+	public void printEmpStatistics() {
+		List<Employee> listemps  = empimpl.getAllEmployees();
+			List<Integer> empIds = listemps
+									.stream()
+									.map(Employee::getEmpId)
+									.collect(Collectors.toList());
+			System.out.println("Total No of Employees:  "+empIds.size());
+		
+			System.out.println("Employees :"+empIds);
+			
+			
+			
+			
+			List<Integer> list = listemps
+				.stream()
+				//.map(Employee::getEmpId)
+				.filter(emp -> (emp.getAge())>30)
+				.map(Employee::getEmpId)
+				.collect(Collectors.toList());
+				//.forEach(System.out::println);
+			System.out.println("Employees whose age is greater than 30:"+list);
+			
+			System.out.println("Employees total and avarage salary:");
+			DoubleSummaryStatistics stats =listemps
+												.stream()
+												.map(Employee::getSalary)
+												.collect(Collectors.toList())
+												.stream()
+												.mapToDouble((sal) -> sal)
+												.summaryStatistics();
+			
+			System.out.println("Total Salary: " + stats.getSum());
+			System.out.println("Avg Salary: " + stats.getAverage());
+			System.out.print("Group by Dept: ");
+			Map<String, Long> groupByDept = 
+					listemps
+						.stream()
+						.collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
+			System.out.println(groupByDept);
+			
+			System.out.println("Department wise employee count:");
+			Map<String, Long> groupSortByDept = 
+					listemps
+						.stream()
+						.sorted(Comparator.comparing(Employee::getDepartment))
+						.collect(Collectors.groupingBy(Employee::getDepartment, TreeMap::new, Collectors.counting()));
+			System.out.println(groupSortByDept);
+			System.out.println();
+			System.out.println();
+}
+	
 	
 }

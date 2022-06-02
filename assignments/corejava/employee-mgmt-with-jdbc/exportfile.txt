@@ -1,0 +1,16 @@
+1,Ram,24,Male,developer,IT,20000.0
+4,Sam,26,male,HR,HR,30000.0
+5,Sam,26,male,HR,HR,30000.0
+11,Diya,25,Female,HR,Humanresource,20000.0
+12,John,34,male,Manager,IT,40000.0
+13,John,34,male,Manager,IT,40000.0
+14,peter,25,male,sales,manager,20000.0
+15,peter,25,male,sales,manager,20000.0
+16,Kamala,34,Female,ITrecruiter,HT,30000.0
+17,Kamala,34,Female,ITrecruiter,HT,30000.0
+20,mack,46,male,Developer,It,20000.0
+21,vani,34,female,Developer,IT,30000.0
+22,Laxmi,25,Female,Developer,IT,0.0
+23,Rita,28,Female,Manager,IT,0.0
+24,Laxmi,25,Female,Developer,IT,0.0
+25,Rita,28,Female,Manager,IT,0.0

@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.empapp.Exception.EmpNotFoundException;
 import com.empapp.model.*;
@@ -14,6 +18,7 @@ public class EmployeeManagementMain {
 
 	public static void main(String[] args) {
 		Employee emp;
+		ExecutorService executor = Executors.newCachedThreadPool();
 		int select;
 		EmployeeServiceImpl empservice = new EmployeeServiceImpl();
 		Scanner sc = new Scanner(System.in);
@@ -25,7 +30,10 @@ public class EmployeeManagementMain {
 				System.out.println("Select 3: View Employee");
 				System.out.println("Select 4: Update Employee");
 				System.out.println("Select 5: View All Employee");
-				System.out.println("Select 6: Exit");
+				System.out.println("Select 6: Import Employees");
+				System.out.println("Select 7: Export Employees");
+				System.out.println("Select 8: Print Statics of Employees");
+				System.out.println("Select 9:exit ");
 				System.out.println("Enter your selection:");
 				select = sc.nextInt();
 				switch (select) {
@@ -132,8 +140,41 @@ public class EmployeeManagementMain {
 					empservice.displayAll();
 					break;
 
-				default:
-					System.out.println("Wrong Entry....");
+				case 6:
+					Callable<Boolean> importThread = new Callable<Boolean>() {
+						public Boolean call() throws Exception {
+							System.out.println(Thread.currentThread() + "Importing Employees");
+							empservice.importEmployees();
+							return true;
+						}
+					};
+
+					Future<Boolean> importFuture = executor.submit(importThread);
+					System.out.println(Thread.currentThread().getName() + " Import process started");
+					break;
+
+				case 7:
+					Callable<Boolean> exportThread = new Callable<Boolean>() {
+						public Boolean call() throws Exception {
+							System.out.println(Thread.currentThread() + " Waiting for 5s to start export process.");
+							empservice.exportEmployees();
+							return true;
+						}
+					};
+
+					Future<Boolean> exportFuture = executor.submit(exportThread);
+					break;
+
+				case 8:
+					empservice.printEmpStatistics();
+					break;
+
+				case 9:
+					System.out.println("Thank you!!!");
+					executor.shutdown();
+					sc.close();
+					System.exit(0);
+					break;
 				}
 			}
 		} catch (InputMismatchException e) {
