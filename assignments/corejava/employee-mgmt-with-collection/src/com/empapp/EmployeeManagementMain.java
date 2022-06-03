@@ -84,6 +84,9 @@ public class EmployeeManagementMain {
 				int empId = sc.nextInt();
 				try {
 					empservice.update(empId);
+					System.out.println("Employee Updated Sucessfully:......");
+					System.out.println();
+					System.out.println();
 				}catch(EmpNotFoundException e) {
 					System.out.println("Employee not found");
 				}

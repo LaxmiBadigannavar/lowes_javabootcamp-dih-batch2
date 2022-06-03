@@ -14,3 +14,9 @@
 23,Rita,28,Female,Manager,IT,0.0
 24,Laxmi,25,Female,Developer,IT,0.0
 25,Rita,28,Female,Manager,IT,0.0
+26,Laxmi,25,Female,Developer,IT,20000.0
+27,Rita,28,Female,Manager,IT,40000.0
+28,Laxmi,25,Female,Developer,IT,20000.0
+29,Rita,28,Female,Manager,IT,40000.0
+30,Laxmi,25,Female,Developer,IT,20000.0
+31,Rita,28,Female,Manager,IT,40000.0

@@ -30,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public void update(int empId) throws EmpNotFoundException {
 		if(empMap.containsKey(empId)) {
 			System.out.println("What do you want to update:");
-			int field=sc.nextInt();
+			
 			emp = empMap.get(empId);
 			System.out.println("What u want to update:");
 			System.out.println("Enter 1: for updating name");
@@ -39,11 +39,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 			System.out.println("Enter 4: for updating designation");
 			System.out.println("Enter 5: for updating department");
 			System.out.println("Enter 6: for updating salary");
-		
+			int field=sc.nextInt();
 			System.out.println("Field is: "+field);
 			switch(field) {
 			case 1 :	System.out.println("Enter the Name to update:");
-						String nameToUpdate = sc.nextLine();
+						String nameToUpdate = sc.next();
 						emp.setName(nameToUpdate);	
 						break;
 							

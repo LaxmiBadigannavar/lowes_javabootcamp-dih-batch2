@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -96,7 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	
 	public void exportEmployees() {
-		System.out.format("   Export started %n", Thread.currentThread().getName());
+		//System.out.format("   Export started %n", Thread.currentThread().getName());
 		empimpl.ExpFromTableToFile();
 	}
 	
@@ -121,7 +122,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 				.collect(Collectors.toList());
 				//.forEach(System.out::println);
 			System.out.println("Employees whose age is greater than 30:"+list);
-			
+			System.out.println("No of Employees whose age is greater than 30 years:"+list.size());
 			System.out.println("Employees total and avarage salary:");
 			DoubleSummaryStatistics stats =listemps
 												.stream()
@@ -140,13 +141,27 @@ public class EmployeeServiceImpl implements EmployeeService{
 						.collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
 			System.out.println(groupByDept);
 			
+			 Map<String, Double> empCountBydept = empCountBydept= listemps.stream()
+			.sorted(Comparator.comparing(Employee::getDepartment)).collect(Collectors
+			.groupingBy(Employee::getDepartment, LinkedHashMap::new, Collectors.averagingInt(Employee::getAge)));
+			
+			 System.out.println("Average Employee Age by Department: "+ empCountBydept );
+			
 			System.out.println("Department wise employee count:");
+			
 			Map<String, Long> groupSortByDept = 
 					listemps
 						.stream()
 						.sorted(Comparator.comparing(Employee::getDepartment))
 						.collect(Collectors.groupingBy(Employee::getDepartment, TreeMap::new, Collectors.counting()));
 			System.out.println(groupSortByDept);
+			
+			
+			 List<String> namesWithS = new ArrayList<>();
+			 namesWithS  = listemps
+						.stream().filter(emp -> emp.getName().startsWith("S")).map(emp -> emp.getName())
+						.collect(Collectors.toList());
+			System.out.println("List Employees starts with 'S':"+namesWithS );
 			System.out.println();
 			System.out.println();
 }
