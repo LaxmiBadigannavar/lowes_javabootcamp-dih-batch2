@@ -17,14 +17,32 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+
 import com.empapp.Exception.EmpNotFoundException;
+import com.empapp.config.EmployeeMgmtConfig;
+import com.empapp.dao.EmployeeDao;
 import com.empapp.dao.EmployeeDaoImpl;
 import com.empapp.model.Employee;
 
 public class EmployeeServiceImpl implements EmployeeService{
 	protected Map<Integer,Employee> empMap = new HashMap<>();
-	EmployeeDaoImpl empimpl = new EmployeeDaoImpl();
-	Employee emp = new Employee();
+	
+	private Employee emp;
+	public EmployeeServiceImpl(EmployeeDaoImpl empimpl) {
+		super();
+		this.empimpl = empimpl;
+	}
+
+	public EmployeeServiceImpl(Employee emp) {
+		super();
+		this.emp = emp;
+	}
+
+	private EmployeeDaoImpl empimpl;	
+	
+
 	Scanner sc = new Scanner(System.in);
 	public void addEmployee(Employee emp) {
 		//EmployeeDaoImpl empimpl = new EmployeeDaoImpl();
@@ -66,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 			while (in.hasNextLine()) {
 				String line = in.nextLine();
 				System.out.println("Importing employee - " + emp);
-				//Employee emp = new Employee();
+				Employee emp = new Employee();
 				StringTokenizer tokenizer = new StringTokenizer(line, ",");
 
 			

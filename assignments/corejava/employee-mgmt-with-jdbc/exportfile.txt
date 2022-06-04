@@ -18,5 +18,9 @@
 27,Rita,28,Female,Manager,IT,40000.0
 28,Laxmi,25,Female,Developer,IT,20000.0
 29,Rita,28,Female,Manager,IT,40000.0
-30,Laxmi,25,Female,Developer,IT,20000.0
+30,Diya,24,female,IT,It,30000.0
 31,Rita,28,Female,Manager,IT,40000.0
+32,Akul,45,male,developer,It,20000.0
+33,Neha,23,female,developer,IT,30000.0
+34,Laxmi,25,Female,Developer,IT,20000.0
+35,Rita,28,Female,Manager,IT,40000.0

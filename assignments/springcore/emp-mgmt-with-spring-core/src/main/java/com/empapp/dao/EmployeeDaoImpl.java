@@ -19,29 +19,34 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	PreparedStatement prestmt = null;
 	ResultSet rs = null;
 	
-	/*
-	 * private void getConnection() { MysqlDataSource dataSource = new
-	 * MysqlDataSource(); dataSource.setDatabaseName("jdbctraining");
-	 * dataSource.setUser("training"); dataSource.setPassword("training");
-	 * dataSource.setServerName("localhost");
-	 * 
-	 * 
-	 * System.out.println("Connecting to database..."); try { conn =
-	 * dataSource.getConnection(); System.out.println("Connection estabilished: " +
-	 * conn); System.out.println("Creating statement..."); stmt =
-	 * conn.createStatement(); } catch (SQLException e) { // TODO Auto-generated
-	 * catch block e.printStackTrace(); }
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+	private void getConnection() {
+		MysqlDataSource dataSource = new MysqlDataSource();
+		dataSource.setDatabaseName("jdbctraining");
+		dataSource.setUser("training");
+		dataSource.setPassword("training");
+		dataSource.setServerName("localhost");
+
+		
+		System.out.println("Connecting to database...");
+		try {
+			conn = dataSource.getConnection();
+			System.out.println("Connection estabilished: " + conn);
+			System.out.println("Creating statement...");
+			stmt = conn.createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		
+
+	}
 	
 	public void insertTable(Employee emp){	
 		try {
-//			if(stmt==null) {
-//				empimpl.getConnection();
-//			}
+			if(stmt==null) {
+				getConnection();
+			}
 			String insertQueryForPrepareStmt = "INSERT INTO employeenew (name, age,gender,designation, department,salary ) VALUES (?, ?, ?, ?, ?,?)";
 			prestmt = conn.prepareStatement(insertQueryForPrepareStmt);
 			prestmt.setString(1, emp.getName() );
@@ -64,11 +69,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	}
 	public void getEmployee(int empId) {
-//		if(stmt==null) {
-//			getConnection();
-//		}
+		if(stmt==null) {
+			getConnection();
+		}
 
-		//Employee emp = new Employee();
+		Employee emp = new Employee();
 		String selectQuery = "SELECT * FROM employeenew where empid ="+empId;
 		System.out.println("Query excuting::"+selectQuery);
 		try {
@@ -93,12 +98,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		//return emp;
 	}
 	public void deleteEmployee(int empid) {
-//		if(stmt==null) {
-//			getConnection();
-//		}
+		if(stmt==null) {
+			getConnection();
+		}
 		String deleteQuery = "DELETE FROM employeenew WHERE empid = ?";
 		try {
-			//getConnection();
+			getConnection();
 			prestmt = conn.prepareStatement(deleteQuery);
 			prestmt.setInt(1, empid);
 			int deleteCount = prestmt.executeUpdate();
@@ -113,9 +118,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	public void updateEmployee(Employee emp){
 		
-//		if(stmt==null) {
-//			getConnection();
-//		}
+		if(stmt==null) {
+			getConnection();
+		}
 		try {
 			System.out.println("Update is called");	
 			 String updateQuery = "UPDATE employeenew SET name = ? , age = ? ,gender = ?, designation = ? , department = ?" +
@@ -138,9 +143,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		}
 	}
 	public List<Employee> getAllEmployees() {
-//		if(stmt==null) {
-//			getConnection();
-//		}
+		if(stmt==null) {
+			getConnection();
+		}
 		String selectQuery = "SELECT * FROM employeenew";
 		System.out.println("Query excuting::"+selectQuery);
 		List<Employee> listEmp = new ArrayList<>();
@@ -175,9 +180,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 	
 	public void ExpFromTableToFile() {
-//		if (stmt == null) {
-//			getConnection();
-//		}
+		if (stmt == null) {
+			getConnection();
+		}
 		String selectQuery = "SELECT * FROM employeenew";
 		System.out.println("Query excuting::" + selectQuery);
 		try (FileWriter out = new FileWriter(
