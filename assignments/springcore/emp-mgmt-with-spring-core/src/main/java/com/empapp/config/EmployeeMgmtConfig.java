@@ -67,10 +67,7 @@ public class EmployeeMgmtConfig {
 		
 
 	}
-	public void destroy() {
-		System.out.println("Destroy Method");
-		
-	}
+	
 	
 	
 }
