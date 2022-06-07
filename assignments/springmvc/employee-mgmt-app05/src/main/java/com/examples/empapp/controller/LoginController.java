@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.examples.empapp.exception.LoginException;
 import com.examples.empapp.model.User;
+import com.examples.empapp.service.UserService;
 
 /**
  * Handles requests for the application login page.
@@ -27,7 +28,7 @@ import com.examples.empapp.model.User;
 @SessionAttributes("userName")
 public class LoginController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)	
 	public ModelAndView login(Model model) {
@@ -39,19 +40,28 @@ public class LoginController {
 	@ExceptionHandler(LoginException.class)
 	public ModelAndView authenticate(@ModelAttribute User user, Model model, HttpSession session) {
 		
-		if(user.getUserName().equalsIgnoreCase("admin") && user.getPassword().equalsIgnoreCase("admin@123"))
-		{
-			logger.info("Authentication success");
-//			session.setAttribute("userName", login.getUserName());
-			model.addAttribute("userName", "admin");
-			return new ModelAndView("redirect:/employee/list");
-		}
-		else
-		{
+		UserService service = new UserService();
+		List<User> users = service.getUsers();
+		System.out.println("User List size:"+users.size());
+		for (User user2 : users) {	
+			//User userauth = user2;
+			System.out.println("User name getting from List:"+user2.getUserName());
+			//System.out.println("User name getting from form feed:"+user2.getUserName());
+			if(user.getUserName().equalsIgnoreCase(user2.getUserName()) && user.getPassword().equalsIgnoreCase(user2.getPassword()))
+			{
+			
+				logger.info("Authentication success");
+//				session.setAttribute("userName", login.getUserName());
+				model.addAttribute("userName", user2.getUserName());
+				return new ModelAndView("redirect:/employee/list");
+			}
+		}	
+		
+		
 			logger.info("Authentication failed");
 			throw new LoginException("Invalid User or Password");
 //			return new ModelAndView("redirect:/login");
-		}
+		
 		
 	}
 	
