@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 
 import com.empapp.Exception.EmpNotFoundException;
+import com.empapp.dao.DatabaseConnection;
 import com.empapp.dao.EmployeeDaoImpl;
 import com.empapp.model.Employee;
 import com.empapp.service.EmployeeServiceImpl;
@@ -34,6 +35,11 @@ public class EmployeeMgmtConfig {
 	@Bean(/*initMethod = "getConnection"*/)
 	EmployeeDaoImpl empimpl(){
 		return new EmployeeDaoImpl(); 
+	}
+	
+	@Bean
+	DatabaseConnection database() {
+		return new DatabaseConnection();
 	}
 	
 	@Bean
