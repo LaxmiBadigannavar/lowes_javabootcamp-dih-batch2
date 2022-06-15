@@ -3,11 +3,13 @@ package com.spring.boot.empapp.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
@@ -31,8 +33,6 @@ import com.spring.boot.empapp.model.Employee;
 import com.spring.boot.empapp.model.ResponseMessage;
 import com.spring.boot.empapp.service.EmployeeService;
 
-
-
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -45,15 +45,9 @@ public class EmployeeController {
 	// add Employee
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<ResponseMessage> create(@RequestBody @Valid Employee employee, BindingResult errors) throws URISyntaxException, EmployeeException {
+	public ResponseEntity<ResponseMessage> create(@RequestBody @Valid Employee employee) {
 		
-		if(errors.hasErrors()) {
-			for(ObjectError error:errors.getAllErrors()) {
-				logger.error("Validation Error: {} - {} ", error.getObjectName(), error.getDefaultMessage());
-			}
-			throw new EmployeeException("Validation Errors");
-		}
-		
+			
 		// Logic to add account
 		Employee empCreated = empService.createEmployee(employee);		
 		
@@ -73,13 +67,13 @@ public class EmployeeController {
 
 	// Get Employee
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public Employee get(@PathVariable int id) {
+	public Employee get(@PathVariable int id) throws NoSuchElementException  {
 		return empService.get(id);
 	}
 
 	// Update Account
 	@PutMapping("/{id}")
-	public ResponseEntity<String> update(@PathVariable int id, @RequestBody Employee employee) {
+	public ResponseEntity<String> update(@PathVariable int id, @RequestBody Employee employee){
 		employee.setEmpId(id);
 		Employee updatedEmp = empService.update(id, employee);
 		return ResponseEntity.ok().body("Employee updated successfully");
@@ -92,10 +86,10 @@ public class EmployeeController {
 		return ResponseEntity.ok().body("Employee deleted successfully");
 	}
 	
-	@ExceptionHandler(EmployeeException.class)
-	public ResponseEntity<ResponseMessage>  handleErrors(EmployeeException ex) {
-		ResponseMessage response = new ResponseMessage("Failure", ex.getMessage());
-		return ResponseEntity.internalServerError().body(response);
-	}	
+//	@ExceptionHandler(EmployeeException.class)
+//	public ResponseEntity<ResponseMessage>  handleErrors(EmployeeException ex) {
+//		ResponseMessage response = new ResponseMessage("Failure", ex.getMessage());
+//		return ResponseEntity.internalServerError().body(response);
+//	}	
 
 }

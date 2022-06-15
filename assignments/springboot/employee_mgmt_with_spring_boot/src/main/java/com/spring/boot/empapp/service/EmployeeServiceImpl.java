@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	//Map<Integer,Employee> employees = new HashMap<Integer, Employee>();
 	
 	@Override
-	 public Employee createEmployee(Employee emp) throws EmployeeException {
+	 public Employee createEmployee(Employee emp){
 		 //employees.put(emp.getEmpId(), emp);
 		 //return emp;
 		return repo.save(emp);
@@ -30,12 +31,20 @@ public class EmployeeServiceImpl implements EmployeeService{
 	 
 	@Override
 	 public List<Employee> getAll() throws EmployeeException {
-		 //return new ArrayList<Employee>(employees.values());
-		return repo.findAll();
+		List<Employee> employees = new ArrayList<>(); 
+		//return new ArrayList<Employee>(employees.values());
+		employees = repo.findAll();
+		System.out.println("Employees List:"+employees.size());
+		if(!employees.isEmpty()) {
+			return repo.findAll();
+		}else {
+			throw new EmployeeException("No Employees present");
+		}
+		
 	 }
 	
 	@Override
-	 public Employee get(int empId) {
+	 public Employee get(int empId) throws NoSuchElementException{
 		// return employees.get(empId);
 		return repo.findById(empId).get();
 	 }

@@ -1,26 +1,48 @@
-package com.spring.boot.empapp.model;
+ package com.spring.boot.empapp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.NumberFormat;
 
 @XmlRootElement
 @Entity
 @Table
 public class Employee {
-	private String name;
-	private int age;
-	private String gender;
-	private String designation;
-	private String department;
-	private double salary;
-	
-	
 	@Id
 	@GeneratedValue
 	private int empId;
+	
+	@NotEmpty
+	@Size(min = 2,message = "Name should be of atleast of 2 characters")
+	private String name;
+	
+	@Min(value=18, message="Minimum age is 18")
+	@Max(value= 70, message = "Maximum age is 70")
+	private int age;
+	
+	@NotEmpty(message="Gender is required")
+	private String gender;
+	
+	@NotBlank (message = "Designation should be mentioned")
+	private String designation;
+	
+	private String department;
+	
+	@Min(value=10000, message="Minimum salary should be Rs 10000/-")
+	@Max(value = 100000, message = "Max Salary should be RS 1000000/-")
+	private double salary;
+	
+	
 	public int getEmpId() {
 		return empId;
 	}
